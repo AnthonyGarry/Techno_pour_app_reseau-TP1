@@ -1,0 +1,5 @@
+@startuml
+Client -> Serveur : SYN 10856 (Nombre aléatoire)
+Serveur -> Client : ACK 10857 (SYN réçu +1) - SYN 751 (Nombre aléatoire) 
+Client -> Serveur : ACK 752 (SYN reçu +1)
+@enduml
