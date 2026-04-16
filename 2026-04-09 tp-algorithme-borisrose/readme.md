@@ -15,9 +15,9 @@
 
 
 
-# Exercice 2 : Horloges vectorielles
+# Exercice 2 : Horloges vectorielles
 
-## Donner l’état du vecteur d’horloge après chaque événement.
+## Donner l’état du vecteur d’horloge après chaque événement.
 
 https://fr.wikipedia.org/wiki/Horloge_vectorielle (Lire l'exemple aide beaucoup !)
 
@@ -98,7 +98,7 @@ Trois serveurs minimums sont donc nécessaire pour tolérer une panne, car cela 
 
 # Exercice 5 : Exclusion mutuelle distribuée
 
-## Déterminer l’ordre d’accès à la ressource.
+## Déterminer l’ordre d’accès à la ressource.
 
 P2 -> P1 -> P3
 
