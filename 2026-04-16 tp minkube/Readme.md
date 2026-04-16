@@ -9,7 +9,7 @@ VM linux mint 8Go de RAM 2CPUs
 https://docs.docker.com/engine/install/ubuntu/
 
 Add Docker's official GPG key:
-```sudo apt update
+```    sudo apt update
 sudo apt install ca-certificates curl
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
@@ -17,7 +17,7 @@ sudo chmod a+r /etc/apt/keyrings/docker.asc
 ```
 
 Add the repository to Apt sources:
-```sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+```    sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
 Types: deb
 URIs: https://download.docker.com/linux/ubuntu
 Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
@@ -28,18 +28,16 @@ EOF
 ```
 
 Mise à jour du cache du gestionnaire de paquets et installation de la dernière version de docker et des extras recommandés :
-```sudo apt update
+```    sudo apt update
 sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
 Lancement d'une image par défaut qui a pour but de vérifier que notre installation docker fonctionne (le docker local la télécharge directement depuis les serveurs de docker) :
-```sudo docker run hello-world
-
+```    sudo docker run hello-world
 ```
 
 On vérifie la version :
-```docker --version
-
+```    docker --version
 ```
 "Docker version 29.4.0n build 9d7ad9f"
 
@@ -53,36 +51,31 @@ On vérifie la version :
 https://kubernetes.io/fr/docs/tasks/tools/install-minikube/
 
 Téléchargement de la dernière version de l'installateur minikube :
-```curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube
-
+```    curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube
 ```
 On enlève le \ à la fin de la première commande ci-dessus (voir site) car il cause une erreur et l'échec du curl.
 
 Création (si jamais pour une raison obscure il n'existe pas déjà) du répertoire de binaires de l'utilisateur :
-```sudo mkdir -p /usr/local/bin/
-
+```    sudo mkdir -p /usr/local/bin/
 ```
 
 Lancement de l'installateur minikube en lui renseignant le chemin du répertoire de binaires de l'utilisateur :
-```sudo install minikube /usr/local/bin/
-
+```    sudo install minikube /usr/local/bin/
 ```
 
 
 https://minikube.sigs.k8s.io/docs/drivers/docker/
 
 On démarre minikube :
-```minikube start --driver=docker
-
+```    minikube start --driver=docker
 ```
 La commande échoue car j'ai oublié d'ajouter mon utilisateur non-root au groupe docker :
-```sudo usermod -aG docker user
+```    sudo usermod -aG docker user
 minikube start --driver=docker
 ```
 
 On vérifie la version :
-```minikube version
-
+```    minikube version
 ```
 "minikube version: v1.13.1
 commit: La flemme de recopier ça =) "
@@ -97,31 +90,26 @@ commit: La flemme de recopier ça =) "
 https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
 
 Téléchargement de la dernière version du binaire kubectl :
-```curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-
+```    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 ```
 Ils ont un méchanisme très intéréssant où il ne crée pas de dossier "Latest" qui doit manuellement être mit à jour mais utilisent à la place un fichier texte où est écrit la dernière version.
 J'imagine que ça nécessite légèrement moins d'entretion manuel/humain que de créer un dossier latest et de le renommer à chaque nouvelle version tout en créant un nouveau dossier latest, puisque là ils créent un dossier par version (normal) et update le fichier texte sans devoir renommer et recréer.
 
 Téléchargement du checksum de kubectl :
-```curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
-
+```    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
 ```
 
 On vérifie le checksum car je ne connaissais pas cet usage de la commande. (Pas fait pour les autres car c'est une VM isolée de l'hôte (Pas d'accès à l'hôte autre que pour internet et même là elle utilise un NAT interne)) :
-```echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
-
+```    echo "$(cat kubectl.sha256)  kubectl" | sha256sum --check
 ```
 "kubectl: Réussi"
 
 On lance l'installateur en tant que root en ciblant le répertoire de binaire de tout les utilisateurs :
-```sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-
+```    sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 ```
 
 On vérifie la version :
-```kubectl version --client
-
+```    kubectl version --client
 ```
 "Client Version: v1.35.4
 Kustomize Version: v5.7.1"
@@ -135,18 +123,15 @@ La Kustomize Version est la version de Kustomize, l'outil de gestion de configur
 # Déploiement d'une application distribuée
 
 Création du déploiement d'un serveur web nginx :
-```kubectl create deployment web --image=nginx
-
+```    kubectl create deployment web --image=nginx
 ```
 
 Vérification du déploiement :
-```kubectl get deployments
-
+```    kubectl get deployments
 ```
 
 On affiche les pods :
-```kubectl get pods
-
+```    kubectl get pods
 ```
 "Un pod (terme anglo-saxon décrivant un groupe de baleines ou une gousse de pois) est un groupe d'un ou plusieurs conteneurs (comme des conteneurs Docker), ayant du stockage/réseau partagé, et une spécification sur la manière d'exécuter ces conteneurs. Les éléments d'un pod sont toujours co-localisés et co-ordonnancés, et s'exécutent dans un contexte partagé. Un pod modélise un "hôte logique" spécifique à une application - il contient un ou plusieurs conteneurs applicatifs qui sont étroitement liés — dans un monde pré-conteneurs, être exécuté sur la même machine physique ou virtuelle signifierait être exécuté sur le même hôte logique." (https://kubernetes.io/fr/docs/concepts/workloads/pods/pod/)
 
@@ -157,38 +142,32 @@ On affiche les pods :
 # Mise à l'échelle (Scaling)
 
 Création de 3 instances répliquées de notre docker web :
-```kubectl scale deployment web --replicas=3
-
+```    kubectl scale deployment web --replicas=3
 ```
 Est-ce que cela va en faire 3 **nouvelles** ou ammener le **nombre total** de dockers à 3 ?
 
 On vérifie la liste de pods :
-```kubectl get pods
-
+```    kubectl get pods
 ```
 On voit 3 pods, la commande de scale ammène donc le nombre de réplicas à celui entrer dans la commande. On peux aussi identifier lequel de nos pods était le premier (si on n'a pas noté le nom) à travers l'âge des pods.
 
 On expose le docker web (les 3 réplicas) en mode Nodeport, donc en écoutant sur le port 80 d'une adresse interne qui sera générée par la commande (https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types) :
-```kubectl expose deployment web --type=NodePort --port=80
-
+```    kubectl expose deployment web --type=NodePort --port=80
 ```
 
 On récupère l'URL du service :
-```minikube service web --url
-
+```    minikube service web --url
 ```
 "http://192.168.49.2:30330"
 
 On charge l'adresse dans firefox et wouaw, ça fonctionne. On accède à la page d'accueil de nginx.
 
 On simule une panne en supprimant un des pods à partir du nom obtenu avec `kubectl get pods`
-```kubectl delete pod NOM_DU_POD
-
+```    kubectl delete pod NOM_DU_POD
 ```
 
 On vérifie que le pod a bien été supprimé :
-```kubectl get pods
-
+```    kubectl get pods
 ```
 On remarque que kubernetes à automatiquement créé un nouveau pod pour maintenir le nombre de replicas à 3. Le système est donc tolérant aux fautes puisque si jamais un serveur était passé hors-connexion, kubernetes aurait initialisé un nouveau serveur pour maintenir la disponibilité du service.
 
